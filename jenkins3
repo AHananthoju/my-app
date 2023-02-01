@@ -1,11 +1,18 @@
-pipeline {
+pipeline{
     agent any
-
-    stages {
-        stage('build') {
-            steps {
-                sh 'mvn clean package'
+    
+    environment{
+        PATH = "/opt/maven3/bin:$PATH"
+    }
+    stages{
+        stage("Git Checkout"){
+            steps{
+                git 'https://github.com/AHananthoju/my-app'
             }
         }
-    }
-}
+        stage("Maven Build"){
+            steps{
+                sh "mvn clean package"
+                sh "mv target/*.war target/myweb.war"
+            }
+        }
